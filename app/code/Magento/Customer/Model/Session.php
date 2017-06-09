@@ -258,6 +258,11 @@ class Session extends \Magento\Framework\Session\SessionManager
      */
     public function setCustomer(Customer $customerModel)
     {
+        // Force group id when customer is not logged in
+        if (!$this->isLoggedIn()) {
+            $customerModel->setGroupId(\Magento\Customer\Model\Group::NOT_LOGGED_IN_ID);
+        }
+
         $this->_customerModel = $customerModel;
         $this->_httpContext->setValue(
             Context::CONTEXT_GROUP,
